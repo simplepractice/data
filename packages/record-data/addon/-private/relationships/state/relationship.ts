@@ -331,16 +331,6 @@ export default class Relationship {
     });
   }
 
-  addCanonicalRecordDatas(recordDatas: RelationshipRecordData[], idx: number) {
-    for (let i = 0; i < recordDatas.length; i++) {
-      if (idx !== undefined) {
-        this.addCanonicalRecordData(recordDatas[i], i + idx);
-      } else {
-        this.addCanonicalRecordData(recordDatas[i]);
-      }
-    }
-  }
-
   addCanonicalRecordData(recordData: RelationshipRecordData, idx?: number) {
     if (!this.canonicalMembers.has(recordData)) {
       this.canonicalMembers.add(recordData);
