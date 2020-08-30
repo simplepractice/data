@@ -620,7 +620,7 @@ export default class Relationship {
    `push` use `updateMeta`, `updateData` and `updateLink` to update the state
    of the relationship.
    */
-  push(payload: JsonApiRelationship, initial?: boolean) {
+  push(payload: JsonApiRelationship) {
     let hasRelationshipDataProperty = false;
     let hasLink = false;
 
@@ -630,12 +630,12 @@ export default class Relationship {
 
     if (payload.data !== undefined) {
       hasRelationshipDataProperty = true;
-      this.updateData(payload.data, initial);
+      this.updateData(payload.data);
     } else if (this.isAsync === false && !this.hasAnyRelationshipData) {
       hasRelationshipDataProperty = true;
       let data = this.kind === 'hasMany' ? [] : null;
 
-      this.updateData(data, initial);
+      this.updateData(data);
     }
 
     if (payload.links) {
@@ -689,27 +689,25 @@ export default class Relationship {
     } else if (hasLink) {
       this.setRelationshipIsStale(true);
 
-      if (!initial) {
-        let recordData = this.recordData;
-        let storeWrapper = this.recordData.storeWrapper;
-        if (CUSTOM_MODEL_CLASS) {
-          storeWrapper.notifyBelongsToChange(recordData.modelName, recordData.id, recordData.clientId, this.key!);
-        } else {
-          storeWrapper.notifyPropertyChange(
-            recordData.modelName,
-            recordData.id,
-            recordData.clientId,
-            // We know we are not an implicit relationship here
-            this.key!
-          );
-        }
+      let recordData = this.recordData;
+      let storeWrapper = this.recordData.storeWrapper;
+      if (CUSTOM_MODEL_CLASS) {
+        storeWrapper.notifyBelongsToChange(recordData.modelName, recordData.id, recordData.clientId, this.key!);
+      } else {
+        storeWrapper.notifyPropertyChange(
+          recordData.modelName,
+          recordData.id,
+          recordData.clientId,
+          // We know we are not an implicit relationship here
+          this.key!
+        );
       }
     }
   }
 
   localStateIsEmpty() {}
 
-  updateData(payload?, initial?) {}
+  updateData(payload?) {}
 
   destroy() {}
 }

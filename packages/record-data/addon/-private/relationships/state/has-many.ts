@@ -164,25 +164,6 @@ export default class ManyRelationship extends Relationship {
     }
   }
 
-  setInitialRecordDatas(recordDatas: RelationshipRecordData[] | undefined) {
-    if (Array.isArray(recordDatas) === false || !recordDatas || recordDatas.length === 0) {
-      return;
-    }
-
-    for (let i = 0; i < recordDatas.length; i++) {
-      let recordData = recordDatas[i];
-      if (this.canonicalMembers.has(recordData)) {
-        continue;
-      }
-
-      this.canonicalMembers.add(recordData);
-      this.members.add(recordData);
-      this.setupInverseRelationship(recordData);
-    }
-
-    this.canonicalState = this.canonicalMembers.toArray();
-  }
-
   /*
     This is essentially a "sync" version of
       notifyHasManyChange. We should work to unify
@@ -225,7 +206,7 @@ export default class ManyRelationship extends Relationship {
     return payload;
   }
 
-  updateData(data, initial) {
+  updateData(data) {
     let recordDatas: RelationshipRecordData[] | undefined;
     if (isNone(data)) {
       recordDatas = undefined;
@@ -235,10 +216,6 @@ export default class ManyRelationship extends Relationship {
         recordDatas[i] = this.recordData.storeWrapper.recordDataFor(data[i].type, data[i].id) as RelationshipRecordData;
       }
     }
-    if (initial) {
-      this.setInitialRecordDatas(recordDatas);
-    } else {
-      this.updateRecordDatasFromAdapter(recordDatas);
-    }
+    this.updateRecordDatasFromAdapter(recordDatas);
   }
 }
