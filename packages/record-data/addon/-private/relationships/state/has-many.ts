@@ -10,7 +10,7 @@ type RelationshipRecordData = import('../../ts-interfaces/relationship-record-da
 type DefaultCollectionResourceRelationship = import('../../ts-interfaces/relationship-record-data').DefaultCollectionResourceRelationship;
 
 /**
-  @module @ember-data/store
+  @module @ember-data/record-data
 */
 
 export default class ManyRelationship extends Relationship {
