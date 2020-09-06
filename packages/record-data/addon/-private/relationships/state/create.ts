@@ -56,7 +56,7 @@ export default class Relationships {
       let rel = this.recordData.storeWrapper.relationshipsDefinitionFor(this.recordData.modelName)[key];
 
       if (rel) {
-        // lazyily instantiate relationship
+        // lazily instantiate relationship
         relationship = relationships[key] = createRelationshipFor(rel, this._store, recordData, key);
       }
     }
